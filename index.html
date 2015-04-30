@@ -165,6 +165,7 @@
     -->
     <div id="bored" class="step slide" data-x="-1000" data-y="-1500">
         <q>Aren't you just <b>bored</b> with all those slides-based presentations?</q>
+        <input type="text" x-webkit-speech />
     </div>
 
     <!--
@@ -344,6 +345,12 @@ if ("ontouchstart" in document.documentElement) {
     document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
 }
 
+function convertCanvasToImage(canvas) {
+	var image = new Image();
+	image.src = canvas.toDataURL("image/png");
+	return image;
+}
+
 // Put event listeners into place
 window.addEventListener("DOMContentLoaded", function() {
 	// Grab elements, create settings, etc.
@@ -358,6 +365,8 @@ window.addEventListener("DOMContentLoaded", function() {
   // Trigger photo take
   document.getElementById("snap").addEventListener("click", function() {
  	context.drawImage(video, 0, 0, 640, 480);
+    var img = convertCanvasToImage(canvas);
+    
   });
 
 	// Put video listeners into place
@@ -368,7 +377,7 @@ window.addEventListener("DOMContentLoaded", function() {
 		}, errBack);
 	} else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
 		navigator.webkitGetUserMedia(videoObj, function(stream){
-			video.src = window.webkitURL.createObjectURL(stream);
+			video.src = window.URL.createObjectURL(stream);
 			video.play();
 		}, errBack);
 	}
